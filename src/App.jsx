@@ -21,6 +21,8 @@ function App() {
       ...formData,
       [placeholder]: e.target.value,
     });
+    setTemplateLength(template.length);
+    setCharacterCountTooltip(template.length > 300 ? "Message too long" : "You are good");
   };
 
   const handleCopy = () => {
