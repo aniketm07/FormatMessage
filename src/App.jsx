@@ -17,13 +17,23 @@ function App() {
   }, [template]);
 
   const handleInputChange = (e, placeholder) => {
-    setFormData({
-      ...formData,
-      [placeholder]: e.target.value,
-    });
-    setTemplateLength(template.length);
-    setCharacterCountTooltip(template.length > 300 ? "Message too long" : "You are good");
-  };
+    const updatedFormData = {
+        ...formData,
+        [placeholder]: e.target.value,
+    };
+    setFormData(updatedFormData);
+    const renderedMessage = template.split(/(\[.*?\])/g).map((part) => {
+        const match = part.match(/\[(.*?)\]/);
+        if (match) {
+            const placeholder = match[1];
+            return updatedFormData[placeholder] || `[${placeholder}]`;
+        }
+        return part;
+    }).join("");
+
+    setTemplateLength(renderedMessage.length);
+    setCharacterCountTooltip(renderedMessage.length > 300 ? "Message too long" : "You are good");
+};
 
   const handleCopy = () => {
     navigator.clipboard.writeText(
