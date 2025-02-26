@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Logo from "./assets/message.svg";
 import Copy from "./assets/copy.svg";
 
 function App() {
   const [template, setTemplate] = useState("");
+  const [templateLength, setTemplateLength] = useState(0);
   const [formData, setFormData] = useState({});
   const [copyTooltip, setCopyTooltip] = useState("Copy");
-  const [characterCountTooltip, setCharacterCountTooltip] = useState(template.length > 300 ? "Message too long!" : "You are good!");
+  const [characterCountTooltip, setCharacterCountTooltip] = useState(templateLength > 300 ? "Message too long!" : "You are good!");
 
   const placeholders = Array.from(template.matchAll(/\[(.*?)\]/g), (m) => m[1]);
 
   useEffect(() => {
+    setTemplateLength(template.length);
     setCharacterCountTooltip(template.length > 300 ? "Message too long" : "You are good");
   }, [template]);
 
@@ -102,10 +104,10 @@ function App() {
           <div className="flex relative group">
             <p
                 className={`text-xl mb-4 ${
-                template.length > 300 ? "text-red-500 font-semibold" : ""
+                templateLength > 300 ? "text-red-500 font-semibold" : ""
                 }`}
             >
-                {template.length}
+                {templateLength}
             </p>
             <span className="text-xl mb-4"> /300</span>
             <span className="absolute bottom-14 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity">
